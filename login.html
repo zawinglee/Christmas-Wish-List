@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <script src="./_js/purify.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+    <link href="./_css/login.css" rel="stylesheet">
+    <title>Welcome | XMax Wishlist CRUD</title>
+</head>
+<body>
+
+<h1>Login</h1>
+
+<form id="logInForm">
+    <label for="username">Username: </label>
+    <input type="text" name="username" id="username" required>
+    <br>
+    <label for="password">Password: </label>
+    <input type="password" name="password" id="password" required>
+    <br>
+    <button id="login" type="submit">Login</button>
+
+    <br>
+    <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+
+    <br>
+    <output id="output" style="color: red"></output>
+</form>
+
+<script>
+    let form = document.getElementById('logInForm');
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+    })
+</script>
+
+<script type="module">
+    import {loginButton} from "./_js/login.js";
+    document.getElementById('login').addEventListener('click', loginButton);
+</script>
+
+</body>
+</html>

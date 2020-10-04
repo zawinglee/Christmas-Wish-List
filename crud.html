@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <script src="_js/purify.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+    <link href="_css/index.css" rel="stylesheet">
+    <title>Home | XMax Wishlist CRUD</title>
+
+</head>
+<body>
+
+<div id="root">
+    <h1 id="headerWelcome" style="text-align: center">Welcome</h1>
+    <h2 style="text-align: center">My <span style="color: red">XMax</span> Wish List</h2>
+    <div style="text-align: center">
+        <button id="btnAdd" style="margin-right: 10px">Add an Item</button>
+        <button id="bntLogout" style="border: 2px solid skyblue">Logout</button>
+    </div>
+
+    <div id="container" class="container"></div>
+    <br>
+    <p id="output" style="text-align: center" hidden>No item is currently listed</p>
+</div>
+
+
+<div id="divD" style="text-align: center">
+    <dialog id="dialog">
+        <h2 id="editorHeader" style="background: green; border-radius: 12px; color: red">Add an Item</h2>
+        <form id="form">
+            <label for="title">Item: </label>
+            <input type="text" name="title" id="title" placeholder="Item Name" class="label-input" >
+            <br>
+            <label for="price">Price: $</label>
+            <input type="number" name="number" id="price" class="label-input" >
+            <br>
+            <label for="category">Category: </label>
+            <input type="text" name="category" id="category" class="label-input" >
+            <br>
+            <input type="file" name="pic" accept="image/*" id="image">
+            <br>
+            <label for="comment">Comment: </label>
+            <input type="text" name="comment" id="comment" class="label-input">
+            <br>
+
+            <hr>
+            <br>
+            <p id="loaded_n_total">I Wish You a Merry Christmas</p>
+            <progress id="progressBar" value="100" max="100" style="width:300px;" hidden></progress>
+            <br>
+            <button id="cancelBtn" type="button">Cancel</button>
+            <button id="saveBtn" type="button">Save</button>
+        </form>
+    </dialog>
+</div>
+
+<div id="divB" style="text-align: center">
+    <dialog id="dDelete">
+        <p id="dDeleteP">Delete this item?</p>
+        <button id="dDeleteCancel">Cancel</button>
+        <button id="dDeleteOk" style="border: 2px solid red;">Delete</button>
+    </dialog>
+</div>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script type="module">
+    let CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dlg8fzpfm/upload';
+    let CLOUDINARY_PRESENT = 'tnnse4je';
+
+    import {addMovieButton, cancelBtn, initilizeList, forceUpdate, logOut} from "./_js/index.js";
+
+    let loginInfo = JSON.parse(localStorage.getItem('login'));
+    let welcomeHeader = document.getElementById('headerWelcome');
+
+    if (loginInfo == null) {
+        window.location = 'login.html';
+    }
+    welcomeHeader.innerText = "Welcome, " + loginInfo.username + "!";
+
+    forceUpdate();
+
+    document.getElementById('btnAdd').addEventListener('click', function () {
+        let dialog = document.getElementById('dialog');
+        if (typeof dialog.showModal === "function") {
+            dialog.showModal();
+        } else {
+            alert("The dialog API is not supported by this browser");
+        }
+
+        document.getElementById('editorHeader').innerText = "Add an Item";
+
+        let uploader = document.getElementById('image');
+        uploader.addEventListener('change', function (event) {
+            document.getElementById('saveBtn').hidden = true;
+            let file = event.target.files[0];
+            let formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_PRESENT);
+            axios({
+                url: CLOUDINARY_URL,
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/x-www-form-urlencoded'
+                },
+                data: formData
+            }).then(function (res) {
+                console.log(res);
+                localStorage.setItem('img', JSON.stringify(res));
+                document.getElementById('loaded_n_total').innerText = "Image upload successful!";
+                document.getElementById('progressBar').hidden = false;
+                document.getElementById('saveBtn').hidden = false;
+            });
+        });
+
+        document.getElementById('saveBtn').addEventListener('click', addMovieButton);
+        document.getElementById('cancelBtn').addEventListener('click', cancelBtn);
+    });
+
+    document.getElementById('bntLogout').addEventListener('click', logOut)
+</script>
+
+</body>
+</html>

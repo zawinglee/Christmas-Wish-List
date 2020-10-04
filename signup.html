@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <script src="./_js/purify.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+    <link href="./_css/login.css" rel="stylesheet">
+    <title>Sign Up | XMax Wishlist CRUD</title>
+</head>
+<body>
+
+<h1>Sign Up</h1>
+<form id="signUpForm">
+    <label for="username">Username: </label>
+    <input type="text" name="username" id="username" required>
+    <br>
+    <label for="email">Email: </label>
+    <input type="email" name="email" id="email" required>
+    <br>
+    <label for="password">Password: </label>
+    <input type="password" name="password" id="password" required>
+    <br>
+    <label for="re_password">Re-enter Password: </label>
+    <input type="password" name="re_password" id="re_password" required>
+    <br>
+    <button id="signup" type="submit">Sign Up</button>
+
+    <br>
+    <output id="output" style="color: red"></output>
+
+    <br>
+    <p>Already have an account? <a href="login.html">Login</a></p>
+</form>
+
+<script>
+    let form = document.getElementById('signUpForm');
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+    })
+</script>
+
+<script type="module">
+    import {signupListener} from "./_js/signup.js";
+    document.getElementById('signup').addEventListener('click', signupListener);
+</script>
+
+</body>
+</html>
